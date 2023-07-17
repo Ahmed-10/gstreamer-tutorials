@@ -71,3 +71,50 @@ gboolean gst_element_link_many (GstElement * element_1, GstElement * element_2, 
 void g_object_set (GObject* object, const gchar* first_property_name, ...)
 ```
 > documentation found on [docs.gtk.org/gobject/method.Object.set](https://docs.gtk.org/gobject/method.Object.set.html#declaration)
+
+| **tutorial 3: Dynamic pipelines** |
+| - |
+### _link a source pad with sink element_
+```
+#define g_signal_connect (instance, detailed_signal, c_handler, data)
+```
+> Connects a `GCallback` function to a signal for a particular object. find more in documentation [docs.gtk.org/gobject/func.signal_connect](https://docs.gtk.org/gobject/func.signal_connect.html#declaration)
+
+### _get a pointer to an existing element pad_
+```
+GstPad * gst_element_get_static_pad (GstElement * element, const gchar * name)
+```
+> Retrieves a pad from element by name. This version only retrieves already-existing 'static' pads. and returns the requested `GstPad` if found, otherwise `NULL`. unref after usage with `gst_object_unref`.
+
+### _check if pad is linked to another_
+```
+gboolean gst_pad_is_linked (GstPad * pad)
+```
+>  Returns `TRUE` if the pad is linked, `FALSE` otherwise
+### _get pad current capabilities_
+```
+GstCaps * gst_pad_get_current_caps (GstPad * pad)
+```
+> Gets the capabilities currently configured on pad. Returns the current caps of the pad <u>with incremented ref-count</u> or `NULL` when pad has no caps. Unref after usage with `gst_caps_unref`.
+
+### _get the caps structure_
+
+```
+GstStructure * gst_caps_get_structure (const GstCaps * caps, guint index)
+```
+> Finds the structure in caps at index, and returns it.
+### _get the string structure_
+```
+const gchar * gst_structure_get_name (const GstStructure * structure)
+```
+> returns the name of structure as a string.
+### _link source pad to sink pad_
+```
+GstPadLinkReturn gst_pad_link (GstPad * srcpad, GstPad * sinkpad)
+```
+> Links the source pad and the sink pad.
+### _unref element caps_
+```
+gst_caps_unref (GstCaps * caps)
+```
+> Unrefs a `GstCaps` and frees all its structures and the structures' values when the refcount reaches 0.
