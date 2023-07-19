@@ -217,3 +217,56 @@ sudo apt-get install libgtk-3-dev
 gst_video_overlay_set_window_handle (GstVideoOverlay * overlay, guintptr handle)
 ```
 > This will call the video overlay's set_window_handle method. You should use this method to tell to an overlay to display video output to a specific window 
+
+---
+| **tutorial 6: Media formats and Pad Capabilities** |
+| - |
+
+### _get an element by name_
+```
+GstElementFactory * gst_element_factory_find (const gchar * name)
+```
+> Search for an element factory of the given name. Refs the returned element factory; caller is responsible for unreffing usung `gst_object_unref`.
+
+### _get element pad template_
+```
+const GList * gst_element_factory_get_static_pad_templates (GstElementFactory * factory)
+```
+> Gets the GList of GstStaticPadTemplate for this factory.
+
+### _convert static caps to element caps_
+```
+GstCaps * gst_static_caps_get (GstStaticCaps * static_caps)
+```
+> Converts a `GstStaticCaps` to a `GstCaps`. should be freed after usage with `gst_caps_unref`
+
+### _caps media format check_
+```
+gboolean gst_caps_is_any (const GstCaps * caps)
+```
+> Determines if caps represents any media format.
+
+### _caps no media format check_
+```
+gboolean gst_caps_is_empty (const GstCaps * caps)
+```
+> Determines if caps represents no media formats.
+
+### _numbrer of structures in caps_
+```
+guint gst_caps_get_size (const GstCaps * caps)
+```
+> Gets the number of structures contained in caps.
+
+### _apply function to a structure fields_
+```
+gboolean gst_structure_foreach (const GstStructure * structure, GstStructureForeachFunc func, gpointer user_data)
+```
+> Calls the provided function once for each field in the `GstStructure`. The function must not modify the fields. returns `True` if the supplied function returns `TRUE` For each of the fields, `FALSE` otherwise.
+
+
+### _query pad capabilities_
+```
+GstCaps * gst_pad_query_caps (GstPad * pad, GstCaps * filter)
+```
+> Gets the capabilities this pad can produce or consume. Returns the caps of the pad with incremented ref-count. needs to be unref using `gst_caps_unref`
