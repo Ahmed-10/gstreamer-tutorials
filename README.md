@@ -203,3 +203,17 @@ gst_query_parse_seeking (GstQuery * query, GstFormat * format, gboolean * seekab
 gst_query_unref (GstQuery * q)
 ```
 > Decreases the refcount of the query. If the refcount reaches 0, the query will be freed.
+
+---
+| **tutorial 5: GUI toolkit integration** |
+| - |
+
+### _install Gtk 3.0_
+```bash
+sudo apt-get install libgtk-3-dev
+```
+### _display video output to a specific window_
+```
+gst_video_overlay_set_window_handle (GstVideoOverlay * overlay, guintptr handle)
+```
+> This will call the video overlay's set_window_handle method. You should use this method to tell to an overlay to display video output to a specific window 
