@@ -6,6 +6,8 @@ the basic gstreamer tutorial built with Cmake
 
 notes about important gstreamer APIs used in the [basic tutorials](https://gstreamer.freedesktop.org/documentation/tutorials/basic/index.html?gi-language=c)
 
+
+---
 | **tutorial 1: Hello World!** |
 | - |
 
@@ -33,7 +35,7 @@ GstStateChangeReturn gst_element_set_state (GstElement * element, GstState state
 ```
 > change element state. return type `GstStateChangeReturn`
 
-
+---
 | **tutorial 2: GStreamer concepts** |
 | - |
 
@@ -72,6 +74,7 @@ void g_object_set (GObject* object, const gchar* first_property_name, ...)
 ```
 > documentation found on [docs.gtk.org/gobject/method.Object.set](https://docs.gtk.org/gobject/method.Object.set.html#declaration)
 
+---
 | **tutorial 3: Dynamic pipelines** |
 | - |
 ### _link a source pad with sink element_
@@ -118,3 +121,85 @@ GstPadLinkReturn gst_pad_link (GstPad * srcpad, GstPad * sinkpad)
 gst_caps_unref (GstCaps * caps)
 ```
 > Unrefs a `GstCaps` and frees all its structures and the structures' values when the refcount reaches 0.
+
+---
+| **tutorial 4: Time management** |
+| - |
+
+### _get stream position_
+```
+gboolean gst_element_query_position (GstElement * element, GstFormat format, gint64 * cur)
+```
+> Queries an element for the stream position in nanoseconds. This will be a value between 0 and the stream duration <br/>
+> _**Parameters**_: <br/> 
+> **element**: a GstElement to invoke the position query on. <br/>
+> **format**: the GstFormat requested <br/>
+> **cur**: a location in which to store the current position, or `NULL`. <br/> 
+> _**Returns**_ `TRUE` if the query could be performed. <br/> 
+
+
+### _get stream duration_
+```
+gboolean gst_element_query_duration (GstElement * element, GstFormat format, gint64 * duration)
+```
+> Queries an element for the total stream duration in nanoseconds. If the duration changes for some reason, you will get a `DURATION_CHANGED` message on the pipeline bus, in which case you should re-query the duration using this function. <br/>
+> _**Parameters**_: <br/> 
+> **element**: a GstElement to invoke the position query on. <br/>
+> **format**: the GstFormat requested <br/>
+> **duration**: a location in which to store the current position, or `NULL`. <br/> 
+> _**Returns**_ `TRUE` if the query could be performed. <br/> 
+
+
+### _seek stream to position_
+```
+gboolean gst_element_seek_simple (GstElement * element, GstFormat format, GstSeekFlags seek_flags, gint64 seek_pos)
+```
+> perform a seek on the given element to the given position relative to the start of the stream.
+
+### _get error and debug string from message_
+```
+gst_message_parse_error (GstMessage * message, GError ** gerror, gchar ** debug)
+```
+> Extracts the `GError` and debug string from the `GstMessage`. The values returned in the output arguments are copies; <u>the caller must free them when done</u>.
+
+### _get states from message_
+```
+gst_message_parse_state_changed (GstMessage * message, GstState * oldstate, GstState * newstate, GstState * pending)
+```
+> Extracts the old and new states from the `GstMessage`.
+
+### _get state string from state_
+```
+const gchar * gst_element_state_get_name (GstState state)
+```
+> Gets a string representing the given state.
+
+### _Create query object_
+```
+GstQuery * gst_query_new_seeking (GstFormat format)
+```
+> Constructs a new query object for querying seeking properties of the stream. the output `GstQuery` object should be destroyed with `gst_query_unref`
+
+### _pass query to an element_
+```
+gboolean gst_element_query (GstElement * element, GstQuery * query)
+```
+> return `TRUE` if the query could be performed. 
+
+### _parse GstQuery type seeking_
+```
+gst_query_parse_seeking (GstQuery * query, GstFormat * format, gboolean * seekable, gint64 * segment_start, gint64 * segment_end)
+```
+> Parse a seeking query, writing the results into the passed parameters. <br/>
+> _**Parameters**_: <br/> 
+> **query**: a `GST_QUERY_SEEKING` type query `GstQuery` <br/>
+> **format**: [out] the format to set for the `segment_start` and `segment_end` values, or `NULL` <br/>
+> **seekable**: [out] the seekable flag to set, or `NULL`. <br/> 
+> **segment_start**: [out] the segment_start to set, or `NULL`. <br/> 
+> **segment_end**: [out] the segment_end to set, or `NULL`. <br/> 
+
+### _destroy query object_
+```
+gst_query_unref (GstQuery * q)
+```
+> Decreases the refcount of the query. If the refcount reaches 0, the query will be freed.
