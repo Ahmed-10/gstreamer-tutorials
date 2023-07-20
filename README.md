@@ -270,3 +270,19 @@ gboolean gst_structure_foreach (const GstStructure * structure, GstStructureFore
 GstCaps * gst_pad_query_caps (GstPad * pad, GstCaps * filter)
 ```
 > Gets the capabilities this pad can produce or consume. Returns the caps of the pad with incremented ref-count. needs to be unref using `gst_caps_unref`
+
+---
+| **tutorial 7: Multithreading and Pad Availability** |
+| - |
+
+### _request element pad_
+```
+GstPad * gst_element_get_request_pad (GstElement * element, const gchar * name)
+```
+> Retrieves a pad from the element by name (e.g. "src_%d"). This version only retrieves request pads. The pad should be released with `gst_element_release_request_pad`.
+
+### _release a requested pad_
+```
+gst_element_release_request_pad (GstElement * element, GstPad * pad)
+```
+> Makes the element free the previously requested pad as obtained with `gst_element_request_pad`. This does not unref the pad. If the pad was created by using `gst_element_request_pad`, `gst_element_release_request_pad` needs to be followed by `gst_object_unref` to free the pad.
